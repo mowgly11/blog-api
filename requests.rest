@@ -1,0 +1,7 @@
+Post http://localhost:8080/add_blog
+
+Content-Type: "application/json"
+
+{
+    "title": "title",
+}
