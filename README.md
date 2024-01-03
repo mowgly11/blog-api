@@ -230,7 +230,7 @@ UI_SERVER_IP=192.168.1.18
 
 ADMIN_IP=192.168.1.1
 
-PORT=80
+PORT=8080
 
 MONGODB_CONNECT_URL=mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1 //local database, requires mongodb to be installed locally
 ```
