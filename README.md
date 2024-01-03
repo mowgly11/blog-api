@@ -7,7 +7,7 @@ My main goal with this project is to provide an open source api that allows deve
 
 ## Technologies
 
-This project is mainly using express as an http requests handler, its also using mongodb to save your blogs data.
+This project is mainly using express as an http requests handler, its also uses mongodb to save your blogs data.
 here is a list of frameworks and packages used in this project:
   * **[expressjs](https://expressjs.com/):** a nodejs web application framework, used to build the api endpoints and handle incoming http requests.
   * **[mongoose](https://mongoosejs.com/):** an npm package that facilates interacting with mongodb.
