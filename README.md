@@ -50,7 +50,7 @@ this endpoint returns all the blogs data from the database, here are some exampl
 
 ### POST `/add_blog`
 
-add_blogs is used to add new blogs into the database. it takes a post requests, accepts application/json data and takes the next parameters:
+`/add_blogs` is used to add new blogs into the database. it takes a post requests, accepts application/json data and takes the next parameters:
 
  * **title**: the new blog's title.
  * **author**: the blog's author.
@@ -67,4 +67,125 @@ a success response from this endpoint looks like this:
 
 ### POST `/delete_blog`
 
-as the name indicates, delete_blog is used to delete a blog from the database, 
+as the name indicates, delete_blog is used to delete a blog from the database. this one takes only one parameter in a format of an object, which is basically the query that mongoose is gonna take to delete it.
+the response looks exactly like the one above.
+
+### POST `/edit_blog`
+
+used to modify fields of a specific blog, like content and title ect. it takes two parameters, one is the blog id that you want to modify, and a props object to specify what you're trying to modify. the success response looks like this:
+
+**request content:**
+
+```json
+{
+    "id": "65900df29c592f885580ca0b",
+    "props": {
+        "content": "new Hello"
+    }
+}
+```
+
+**response:**
+
+```json
+{
+    "status": 200,
+    "error": null,
+    "data": {
+        "before": {
+            "_id": "65900df29c592f885580ca0b",
+            "title": "myblog",
+            "author": "mark",
+            "postedAt": 1703939570610,
+            "lastModified": 0,
+            "content": "Hello",
+            "upVotes": 7,
+            "downVotes": 1,
+            "visible": true,
+            "views": 0,
+            "__v": 0
+        },
+        "after": {
+            "_id": "65900df29c592f885580ca0b",
+            "title": "myblog",
+            "author": "mark",
+            "postedAt": 1703939570610,
+            "lastModified": 0,
+            "content": "new Hello",
+            "upVotes": 7,
+            "downVotes": 1,
+            "visible": true,
+            "views": 0,
+            "__v": 0
+        }
+    }
+}
+```
+
+### POST `/upvote` and `/downvote`
+
+both endpoints complete each other, they are basically used to upvote or downvote a specific blog. that's why the only parameter they take is "id". and their success response is exactly the same for `/add_blog` and `/delete_blog`. here is a demo of the payload:
+
+```json
+{
+    "id": "65900df29c592f885580ca0b"
+}
+```
+
+## How to use with the fetch api?
+
+if you're familiar with javascript, you'll definitely be familiar with the built-in fetch api that you can use to make http requests. for those who are confused on how to do that, here are some examples:
+
+this function sends a get request to `/get_blogs` and receives back the blogs data if available 
+ ```js
+async function getBlogs() {
+  let response;
+  try {
+    response = await fetch("http://localhost:8080/get_blogs").then((data) => data.json());
+  } catch(err) {
+    console.log(err);
+  }
+
+  return response;
+}
+ ```
+
+another example for post requests, the same function can be used for the rest of them after changing the passed fields:
+
+```js
+async function addBlog(props) {
+  let response;
+  try {
+    response = await fetch("http://localhost:8080/add_blog", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(props),
+    }).then((data) => data.json());
+  } catch (err) {
+    console.log(err);
+  }
+
+  if(response.status !== 200) return {
+    success: false,
+    error: `unexpected status code. expected 200, got ${response.status}`
+  }
+  else return {
+    success: true,
+    error: null
+  };
+}
+
+await addBlog({
+  title: "My First Blog",
+  author: "J. Mark",
+  content: "just any content you wanna add really."
+});
+```
+
+this example is (kind of) all you need to make requests to the post endpoints.
+
+## Contibutions
+
+contributions are welcome! feel free to add your creative ideas to the project. i will review them and approve your requests! really glad to have other people work on this no matter how skilled you are.
