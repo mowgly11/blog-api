@@ -18,4 +18,4 @@ here is a list of frameworks and packages used in this project:
 
 Currently, myblog api provides 6 different endpoints that will allow you to perform CRUD actions directly to your database. Here a list of them:
 
-#### `GET /get_blogs`
+### `GET /get_blogs`
