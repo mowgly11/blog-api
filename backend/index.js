@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import MongoDBConnect from "./database/connect.js";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 global.__dirname = () => dirname(fileURLToPath(import.meta.url));
 
@@ -17,6 +18,7 @@ MongoDBConnect.connect(process.env.MONGODB_CONNECT_URL);
 
 app.set("x-powered-by", false);
 
+app.use(cors({origin: "*"}));
 //app.use(authMiddlewares.checkForIPAuthorisation);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));

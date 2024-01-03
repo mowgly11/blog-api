@@ -6,7 +6,7 @@ export default {
   endpoint: "/add_blog",
   Post: async function (req, res, next) {
     if (!req.body.title || !req.body.author || !req.body.content)
-      return res.json(utils.makeResponseVariables(400, 'Bad Request'));
+      return res.json(utils.getResponseVariables(400, 'Bad Request'));
 
     const createDocument = await database.create({
       title: req.body.title,
@@ -15,7 +15,7 @@ export default {
     });
 
     if (!createDocument)
-      res.json(utils.makeResponseVariables(502, "Database Error"));
-    else res.json(utils.makeResponseVariables(200));
+      res.json(utils.getResponseVariables(502, "Database Error"));
+    else res.json(utils.getResponseVariables(200));
   },
 };

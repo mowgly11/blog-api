@@ -6,11 +6,11 @@ export default {
   endpoint: "/downvote",
   Post: async function (req, res, next) {
     if (!req.body.id)
-      return res.json(utils.makeResponseVariables(400, "Bad Request"));
+      return res.json(utils.getResponseVariables(400, "Bad Request"));
 
-    const upvoted = await database.downVote(req.body.id);
-    if(!upvoted) return res.json(utils.makeResponseVariables(502, "Database Error"));
+    const downVoted = await database.downVote(req.body.id);
+    if(!downVoted) return res.json(utils.getResponseVariables(502, "Database Error"));
 
-    res.json(utils.makeResponseVariables(200));
+    res.json(utils.getResponseVariables(200));
   },
 };

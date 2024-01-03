@@ -62,7 +62,7 @@ class DataBase {
       await foundBlog.save();
       return { foundBlog, beforeModifictions };
     } catch (err) {
-      console.error("Error updating blog:", err);
+      console.error(err);
       return false;
     }
   }

@@ -5,14 +5,14 @@ export default {
   methods: ["post"],
   endpoint: "/delete_blog",
   Post: async function (req, res, next) {
-    if (!req.body.props)
-      return res.json(utils.makeResponseVariables(400, "Bad Request"));
+    if (!req.body.props || Object.keys(req.body.props).length === 0)
+      return res.json(utils.getResponseVariables(400, "Bad Request"));
 
     const deleteBlog = await database.delete(req.body.props);
 
     if (!deleteBlog)
-      return res.json(utils.makeResponseVariables(502, "Database Error"));
+      return res.json(utils.getResponseVariables(502, "Database Error"));
 
-    res.json(utils.makeResponseVariables(200));
+    res.json(utils.getResponseVariables(200));
   },
 };
