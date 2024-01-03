@@ -18,4 +18,53 @@ here is a list of frameworks and packages used in this project:
 
 Currently, myblog api provides 6 different endpoints that will allow you to perform CRUD actions directly to your database. Here a list of them:
 
-### `GET /get_blogs`
+### GET `/get_blogs`
+
+this endpoint returns all the blogs data from the database, here are some examples of how the response looks like:
+
+**response:**
+```json
+{
+  "status": 200,
+  "error": null,
+  "data": {
+    "blogs": [
+      {
+        "_id": "65900df29c592f885580ca0b",
+        "title": "example",
+        "author": "example",
+        "postedAt": 1703939570610,
+        "lastModified": 0,
+        "content": "blah blah blah blah blah",
+        "upVotes": 7,
+        "downVotes": 1,
+        "visible": true,
+        "views": 0,
+        "__v": 0
+      }
+    ],
+    "length": 1
+  }
+}
+```
+
+### POST `/add_blog`
+
+add_blogs is used to add new blogs into the database. it takes a post requests, accepts application/json data and takes the next parameters:
+
+ * **title**: the new blog's title.
+ * **author**: the blog's author.
+ * **content**: the blog's content/body.
+
+a success response from this endpoint looks like this:
+```json
+{
+  "status": 200,
+  "error": null,
+  "data": null
+}
+```
+
+### POST `/delete_blog`
+
+as the name indicates, delete_blog is used to delete a blog from the database, 
