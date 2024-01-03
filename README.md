@@ -3,7 +3,7 @@
 ## Introduction
 
 myblog-api is a project that allows you to create and host your own blog just by interacting with the api endpoints from your frontend using the fetch api or htmx etc.
-my main goal with this project is to provide an open source api that allows developers to create their blog with ease. and also allow other developers to include their creative ideas into it. 
+my main goal with this project is to provide an open source api that allows developers to create their blog with ease. it also allow other developers to implement their creative ideas into it. 
 
 ## Technologies
 
