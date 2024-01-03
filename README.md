@@ -186,6 +186,64 @@ await addBlog({
 
 this example is (kind of) all you need to make requests to the post endpoints.
 
+## Testing
+
+the tests for this api can be found in the `test/` folder. to test the api you can run this command:
+
+```
+npm run test
+```
+
+## Requirements & Setup
+
+now that you've reached this part, let's talk about how you can get started with this api. follow the steps down bellow to get started:
+
+#### Requirements
+
+* Nodejs v18 or above
+* git
+
+#### Setup
+
+1. Clone the latest version of this repo, you can do this by running this command on your terminal:
+
+```
+git clone https://github.com/mowgly11/blog-api.git
+```
+
+2. change directory to the project, you can do it using:
+
+```
+cd blog-api
+```
+
+3. install the dependecies, this command can get that done:
+
+```
+npm install
+```
+
+4. rename the `.env.example` to `.env` and fill the required information there. example:
+
+```env
+UI_SERVER_IP=192.168.1.18
+
+ADMIN_IP=192.168.1.1
+
+PORT=80
+
+MONGODB_CONNECT_URL=mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1 //local database, requires mongodb to be installed locally
+```
+
+5. and Finally, run the api using:
+
+```
+npm run start
+```
+
+after that it should be good to go in your localhost:port.
+
+
 ## Contibutions
 
 contributions are welcome! feel free to add your creative ideas to the project. i will review them and approve your requests! really glad to have other people work on this no matter how skilled you are.
