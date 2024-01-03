@@ -10,7 +10,7 @@ My main goal with this project is to provide an open source api that allows deve
 This project is mainly using express as an http requests handler, it also uses mongodb to save your blogs data.
 here is a list of frameworks and packages used in this project:
   * **[expressjs](https://expressjs.com/):** a nodejs web application framework, used to build the api endpoints and handle incoming http requests.
-  * **[mongoose](https://mongoosejs.com/):** an npm package that facilates interacting with mongodb.
+  * **[mongoose](https://mongoosejs.com/):** a npm package that facilates interacting with mongodb.
   * **[jest](https://jestjs.io/) & [supertest](https://www.npmjs.com/package/supertest):** both are well known libraries used to test programs in general. 
   * **[pm2](https://www.npmjs.com/package/pm2):** a production process manager for Node.js applications with a built-in load balancer. It allows you to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks.
 
