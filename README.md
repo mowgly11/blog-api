@@ -247,3 +247,5 @@ after that it should be good to go in your localhost:port.
 ## Contibutions
 
 contributions are welcome! feel free to add your creative ideas to the project. i will review them and approve your requests! really glad to have other people work on this no matter how skilled you are.
+
+last updated: 03/01/2024 3:24PM GMT+1
