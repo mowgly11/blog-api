@@ -23,7 +23,7 @@ MongoDBConnect.connect(process.env.MONGODB_CONNECT_URL);
 app.disable('x-powered-by');
 
 app.use(cors({
-  origin: [process.env.ORIGIN_URL, 'http://127.0.0.1:5500'],
+  origin: [process.env.ORIGIN_URL],
   methods: ['GET', 'POST', 'DELETE', "PATCH"],
   credentials: true
 }));
