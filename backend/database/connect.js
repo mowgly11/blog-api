@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import logger from '../index.js';
+import logger from '../utils/logger.js';
 
 class MongoDBConnect {
-    async connect(url) {
+    static async connect(url) {
         mongoose.connect(url);
         
         mongoose.connection.on("connected", () => logger.info("Connected to database"));
@@ -11,4 +11,4 @@ class MongoDBConnect {
     }
 }
 
-export default new MongoDBConnect();
+export default MongoDBConnect;
