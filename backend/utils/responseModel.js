@@ -1,5 +1,5 @@
 class Utils {
-    getResponseVariables(status = 200, error = null, data = null) {
+    static getResponseVariables(status = 200, error = null, data = null) {
         return {
             status,
             error,
@@ -8,4 +8,4 @@ class Utils {
     }
 }
 
-export default new Utils();
+export default Utils;
