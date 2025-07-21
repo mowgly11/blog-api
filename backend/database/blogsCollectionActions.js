@@ -26,19 +26,26 @@ class BlogsCollection {
     }
   }
 
-  static async find(id) {
+  static async find(id, publicOnly = false) {
     try {
-      return (await Blog.findOne({ id })) || false;
+      let blog = await Blog.findOne({ id });
+      
+      if (publicOnly && blog.visible) return blog;
+      else if (!publicOnly) return blog;
+
+      return false;
     } catch (err) {
       logger.error("Error finding blog:", err);
       return false;
     }
   }
 
-  static async findMultiple(from, to) {
+  static async findMultiple(from, to, publicOnly = false) {
     try {
       let allBlogs = await Blog.find({});
       if (!allBlogs) return false;
+
+      if (publicOnly) allBlogs = allBlogs.filter(v => v.visible);
 
       allBlogs = allBlogs.slice(from, to);
 
