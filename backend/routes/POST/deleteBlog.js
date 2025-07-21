@@ -1,17 +1,22 @@
-import database from "../../database/databaseActions.js";
-import utils from "../../utils/utils.js";
+import database from "../../database/blogsCollectionActions.js";
+import Middleware from "../../middleware/middleware.js";
+import utils from "../../utils/responseModel.js";
 
 export default {
-  methods: ["post"],
+  methods: ["delete"],
   endpoint: "/delete_blog",
-  Post: async function (req, res, next) {
-    if (!req.body.props || Object.keys(req.body.props).length === 0)
-      return res.json(utils.getResponseVariables(400, "Bad Request"));
+  middleware: [Middleware.requireJSONContent, Middleware.checkAuthenticated],
+  Delete: async function (req, res, next) {
+    let id = req.body.id;
+    if (!id || id.trim() === '')
+      return res.status(400).json(utils.getResponseVariables(400, "Missing required field (id)"));
 
-    const deleteBlog = await database.delete(req.body.props);
+    const deleteBlog = await database.delete(id);
 
-    if (!deleteBlog)
-      return res.json(utils.getResponseVariables(502, "Database Error"));
+    if (!deleteBlog && deleteBlog != null)
+      return res.status(404).json(utils.getResponseVariables(404, "no blog was found with this id", null));
+
+    if(deleteBlog == null) return res.status(500).json(utils.getResponseVariables(500, "Internal Server Error", null))
 
     res.json(utils.getResponseVariables(200));
   },
