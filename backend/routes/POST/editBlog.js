@@ -5,7 +5,7 @@ import sanitize from "sanitize-html";
 
 export default {
   methods: ["patch"],
-  endpoint: "/edit_blog",
+  endpoint: "/api/edit_blog",
   middleware: [Middleware.requireJSONContent, Middleware.checkAuthenticated],
   Patch: async function (req, res, next) {
     let { id, title, author, content } = req.body;

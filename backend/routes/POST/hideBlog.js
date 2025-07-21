@@ -4,7 +4,7 @@ import Middleware from "../../middleware/middleware.js";
 
 export default {
     methods: ["patch"],
-    endpoint: "/hide_blog",
+    endpoint: "/api/hide_blog",
     middleware: [Middleware.requireJSONContent, Middleware.checkAuthenticated],
     Patch: async function (req, res, next) {
         let id = req.body.id;

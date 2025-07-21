@@ -4,7 +4,7 @@ import utils from "../../utils/responseModel.js";
 
 export default {
   methods: ["delete"],
-  endpoint: "/delete_blog",
+  endpoint: "/api/delete_blog",
   middleware: [Middleware.requireJSONContent, Middleware.checkAuthenticated],
   Delete: async function (req, res, next) {
     let id = req.body.id;

@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 export default {
     methods: ["post"],
-    endpoint: "/login",
+    endpoint: "/api/login",
     middleware: [Middleware.requireJSONContent],
     Post: async function (req, res, next) {
         let username = req.body.username;

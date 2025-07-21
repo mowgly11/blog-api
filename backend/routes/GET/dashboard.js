@@ -3,7 +3,7 @@ import utils from "../../utils/responseModel.js";
 
 export default {
   methods: ["get"],
-  endpoint: "/dashboard",
+  endpoint: "/api/dashboard",
   middleware: [Middleware.checkAuthenticated],
   Get: async function (req, res, next) {
     res.json(utils.getResponseVariables(200));

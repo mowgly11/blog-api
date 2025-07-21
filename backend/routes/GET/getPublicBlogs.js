@@ -5,7 +5,7 @@ import Utils from '../../utils/responseModel.js';
 
 export default {
   methods: ["get"],
-  endpoint: "/get_public_blogs?",
+  endpoint: "/api/get_public_blogs?",
   Get: async function (req, res, next) {
     let from = req.query.from;
     let to = req.query.to;

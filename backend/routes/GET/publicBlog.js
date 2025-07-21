@@ -5,7 +5,7 @@ import Utils from '../../utils/responseModel.js';
 
 export default {
     methods: ["get"],
-    endpoint: "/public_blog/:id",
+    endpoint: "/api/public_blog/:id",
     Get: async function (req, res, next) {
         let id = req.params.id;
         if (!id || id.trim() === "") return res.status(400).json(utils.getResponseVariables(400, 'Missing required fields (id)'));

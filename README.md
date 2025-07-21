@@ -3,26 +3,28 @@
 ## Introduction
 
 blog-api is a project that allows you to create and host your own blog just by interacting with the api endpoints from your frontend using the fetch api or htmx etc.
-My main goal with this project is to provide an open source api that allows developers to create their blog with ease. It also allow other developers to implement their creative ideas into it. 
+My main goal with this project is to provide an open source api that allows developers to create their blog with ease. It also allow other developers to implement their creative ideas into it.
 
 ## Technologies
 
 This project is mainly using express as an http requests handler, it also uses mongodb to save your blogs data.
 here is a list of frameworks and packages used in this project:
-  * **[expressjs](https://expressjs.com/):** a nodejs web application framework, used to build the api endpoints and handle incoming http requests.
-  * **[mongoose](https://mongoosejs.com/):** a npm package that facilates interacting with mongodb.
-  * **[jest](https://jestjs.io/) & [supertest](https://www.npmjs.com/package/supertest):** both are well known libraries used to test programs in general. 
-  * **[pm2](https://www.npmjs.com/package/pm2):** a production process manager for Node.js applications with a built-in load balancer. It allows you to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks.
+
+* **[expressjs](https://expressjs.com/):** a nodejs web application framework, used to build the api endpoints and handle incoming http requests.
+* **[mongoose](https://mongoosejs.com/):** a npm package that facilates interacting with mongodb.
+* **[jest](https://jestjs.io/) & [supertest](https://www.npmjs.com/package/supertest):** both are well known libraries used to test programs in general.
+* **[pm2](https://www.npmjs.com/package/pm2):** a production process manager for Node.js applications with a built-in load balancer. It allows you to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks.
 
 ## Endpoints:
 
-Currently, myblog api provides 6 different endpoints that will allow you to perform CRUD actions directly to your database. Here a list of them:
+Currently, myblog api provides 11 different endpoints that will allow you to perform CRUD actions directly to your database, along with setting up a protected dashboard to add, modify or delete blogs. Here a list of them:
 
 ### GET `/get_blogs`
 
 this endpoint returns all the blogs data from the database, here are some examples of how the response looks like:
 
 **response:**
+
 ```json
 {
   "status": 200,
@@ -52,11 +54,12 @@ this endpoint returns all the blogs data from the database, here are some exampl
 
 `/add_blogs` is used to add new blogs into the database. it takes a post requests, accepts application/json data and takes the next parameters:
 
- * **title**: the new blog's title.
- * **author**: the blog's author.
- * **content**: the blog's content/body.
+* **title**: the new blog's title.
+* **author**: the blog's author.
+* **content**: the blog's content/body.
 
 a success response from this endpoint looks like this:
+
 ```json
 {
   "status": 200,
@@ -136,8 +139,9 @@ both endpoints complete each other, they are basically used to upvote or downvot
 
 if you're familiar with javascript, you'll definitely be familiar with the built-in fetch api that you can use to make http requests. for those who are confused on how to do that, here are some examples:
 
-this function sends a get request to `/get_blogs` and receives back the blogs data if available 
- ```js
+this function sends a get request to `/get_blogs` and receives back the blogs data if available
+
+```js
 async function getBlogs() {
   let response;
   try {
@@ -148,7 +152,7 @@ async function getBlogs() {
 
   return response;
 }
- ```
+```
 
 another example for post requests, the same function can be used for the rest of them after changing the passed fields:
 
@@ -242,7 +246,6 @@ npm run start
 ```
 
 after that it should be good to go in your localhost:port.
-
 
 ## Contibutions
 

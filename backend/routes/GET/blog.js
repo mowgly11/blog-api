@@ -5,7 +5,7 @@ import Utils from '../../utils/responseModel.js';
 
 export default {
   methods: ["get"],
-  endpoint: "/blog/:id",
+  endpoint: "/api/blog/:id",
   middleware: [Middleware.checkAuthenticated],
   Get: async function (req, res, next) {
     let id = req.params.id;

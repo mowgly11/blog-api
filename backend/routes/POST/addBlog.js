@@ -5,7 +5,7 @@ import sanitize from "sanitize-html";
 
 export default {
   methods: ["post"],
-  endpoint: "/add_blog",
+  endpoint: "/api/add_blog",
   middleware: [Middleware.requireJSONContent, Middleware.checkAuthenticated],
   Post: async function (req, res, next) {
     let { title, author, content } = req.body;
