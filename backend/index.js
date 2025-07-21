@@ -9,10 +9,9 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from 'helmet';
 import limit from 'express-rate-limit';
-import pino from 'pino';
+import logger from './utils/logger.js';
 import morgan from "morgan";
-
-const logger = pino();
+import cookieParser from "cookie-parser";
 
 global.__dirname = () => dirname(fileURLToPath(import.meta.url));
 
@@ -25,8 +24,11 @@ app.disable('x-powered-by');
 
 app.use(cors({
   origin: [process.env.ORIGIN_URL, 'http://127.0.0.1:5500'],
-  methods: ['GET', 'POST', 'DELETE']
+  methods: ['GET', 'POST', 'DELETE', "PATCH"],
+  credentials: true
 }));
+
+app.use(cookieParser());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(limit({
@@ -43,6 +45,7 @@ const methodMap = new Map([
   ["get", { method: "get", callback: "Get" }],
   ["post", { method: "post", callback: "Post" }],
   ["delete", { method: "delete", callback: "Delete" }],
+  ["patch", { method: "patch", callback: "Patch" }],
 ]);
 
 const endpointsPath = path.join(__dirname(), "routes");
@@ -64,7 +67,7 @@ const readEndpointsDirectory = (directoryPath, app, methodMap) => {
         const { callback, method: httpMethod } = methodMap.get(method);
         
         if (middleware) {
-          app[httpMethod](endpoint, middleware, module.default[callback]);
+          app[httpMethod](endpoint, ...middleware, module.default[callback]);
         } else {
           app[httpMethod](endpoint, module.default[callback]);
         }
