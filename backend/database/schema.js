@@ -12,7 +12,7 @@ const model = new mongoose.model(
     downVotes: Number,
     visible: Boolean,
     views: Number,
-  })
+  }, { versionKey: false })
 );
 
 export default model;
