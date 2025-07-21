@@ -1,21 +1,33 @@
 import database from "../../database/databaseActions.js";
+import Middleware from "../../middleware/middleware.js";
 import utils from "../../utils/utils.js";
+import sanitize from "sanitize-html";
 
 export default {
   methods: ["post"],
   endpoint: "/add_blog",
+  middleware: Middleware.requireJSONContent,
   Post: async function (req, res, next) {
-    if (!req.body.title || !req.body.author || !req.body.content)
-      return res.json(utils.getResponseVariables(400, 'Bad Request'));
+    let { title, author, content } = req.body;
+    if (!title || !author || !content)
+      return res.json(utils.getResponseVariables(400, 'Missing required fields (title, author, content)', null));
 
-    const createDocument = await database.create({
-      title: req.body.title,
-      author: req.body.author,
-      content: req.body.content,
+    title = sanitize(title).trim();
+    author = sanitize(author).trim();
+    content = sanitize(content).trim();
+
+    if (title === "" || author === "" || content === "") 
+      return res.json(utils.getResponseVariables(400, "invalid/empty fields", null));
+
+    const createBlog = await database.create({
+      title,
+      author,
+      content,
     });
 
-    if (!createDocument)
+    if (!createBlog)
       res.json(utils.getResponseVariables(502, "Database Error"));
-    else res.json(utils.getResponseVariables(200));
+    else 
+      res.json(utils.getResponseVariables(200));
   },
 };
