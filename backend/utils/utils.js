@@ -1,9 +1,9 @@
 class Utils {
-    getResponseVariables(status, error, data) {
+    getResponseVariables(status = 200, error = null, data = null) {
         return {
-            status: status || 200,
-            error: error || null,
-            data: data || null
+            status,
+            error,
+            data
         }
     }
 }
