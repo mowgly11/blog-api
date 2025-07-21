@@ -1,6 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-import authMiddlewares from "./middleware/checkForAuthorisation.js";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -8,6 +7,12 @@ import fs from "fs";
 import MongoDBConnect from "./database/connect.js";
 import bodyParser from "body-parser";
 import cors from "cors";
+import helmet from 'helmet';
+import limit from 'express-rate-limit';
+import pino from 'pino';
+import morgan from "morgan";
+
+const logger = pino();
 
 global.__dirname = () => dirname(fileURLToPath(import.meta.url));
 
@@ -16,14 +21,23 @@ dotenv.config();
 
 MongoDBConnect.connect(process.env.MONGODB_CONNECT_URL);
 
-app.set("x-powered-by", false);
+app.disable('x-powered-by');
 
-app.use(cors({origin: "*"}));
-//app.use(authMiddlewares.checkForIPAuthorisation);
+app.use(cors({
+  origin: [process.env.ORIGIN_URL, 'http://127.0.0.1:5500'],
+  methods: ['GET', 'POST', 'DELETE']
+}));
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(limit({
+  windowMs: 60 * 1000,
+  limit: 40,
+  legacyHeaders: false
+}));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-export default app;
+export default logger;
 
 const methodMap = new Map([
   ["get", { method: "get", callback: "Get" }],
@@ -41,21 +55,28 @@ const readEndpointsDirectory = (directoryPath, app, methodMap) => {
     const stat = fs.statSync(filePath);
 
     if (stat.isDirectory()) readEndpointsDirectory(filePath, app, methodMap);
-    
+
     else if (stat.isFile() && file.endsWith(".js")) {
       const module = await import(`file://${filePath}`);
-      const { endpoint, methods } = module.default;
+      const { endpoint, methods, middleware } = module.default;
 
       methods.forEach((method) => {
         const { callback, method: httpMethod } = methodMap.get(method);
-        app[httpMethod](endpoint, module.default[callback]);
+        
+        if (middleware) {
+          app[httpMethod](endpoint, middleware, module.default[callback]);
+        } else {
+          app[httpMethod](endpoint, module.default[callback]);
+        }
       });
     }
   });
+
+  setTimeout(() => app.all('*', (req, res, next) => res.sendStatus(404)), 1000);
 };
 
 readEndpointsDirectory(endpointsPath, app, methodMap);
 
 const port = process.env.PORT;
 
-app.listen(port, () => console.log("Running on port " + port));
+app.listen(port, () => logger.info(`Server running on port ${port}`));
