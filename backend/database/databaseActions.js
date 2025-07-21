@@ -1,4 +1,5 @@
 import Blog from "./schema.js";
+import logger from "../index.js";
 
 class DataBase {
   async create(props) {
@@ -18,7 +19,7 @@ class DataBase {
       await newBlog.save();
       return newBlog;
     } catch (err) {
-      console.error("Error creating blog:", err);
+      logger.error("Error creating blog:", err);
       return false;
     }
   }
@@ -27,21 +28,21 @@ class DataBase {
     try {
       return (await Blog.findOne(query)) || false;
     } catch (err) {
-      console.error("Error finding blog:", err);
+      logger.error("Error finding blog:", err);
       return false;
     }
   }
 
-  async findMultiple(amount) {
+  async findMultiple(from, to) {
     try {
       let allBlogs = await Blog.find({});
       if (!allBlogs) return false;
 
-      if (amount && amount !== 0) allBlogs = allBlogs.slice(0, amount);
+      allBlogs = allBlogs.slice(from, to);
 
       return allBlogs;
     } catch (err) {
-      console.error("Error finding multiple blogs:", err);
+      logger.error("Error finding multiple blogs: " + err);
       return false;
     }
   }
@@ -62,7 +63,7 @@ class DataBase {
       await foundBlog.save();
       return { foundBlog, beforeModifictions };
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       return false;
     }
   }
@@ -72,7 +73,7 @@ class DataBase {
       await Blog.deleteOne(query);
       return true;
     } catch (err) {
-      console.error("Error deleting blog:", err);
+      logger.error("Error deleting blog:", err);
       return false;
     }
   }
