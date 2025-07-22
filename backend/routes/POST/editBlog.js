@@ -19,7 +19,7 @@ export default {
       allowedTags: ['b', 'i', 'string', 'a', 'code', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'em', 'img'],
       allowedAttributes: {
         'a': ['href'],
-        'img': ['src', 'alt']
+        'img': ['src', 'alt', 'width', 'height']
       }
     }).trim();
 
