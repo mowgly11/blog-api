@@ -30,7 +30,7 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(helmet());
-app.use(morgan('dev'));
+app.use(morgan("combined"));
 app.use(limit({
   windowMs: 60 * 1000,
   limit: 40,
