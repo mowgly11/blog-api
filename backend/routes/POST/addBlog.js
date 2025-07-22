@@ -2,7 +2,7 @@ import database from "../../database/blogsCollectionActions.js";
 import Middleware from "../../middleware/middleware.js";
 import utils from "../../utils/responseModel.js";
 import sanitize from "sanitize-html";
-import config from "../../../config.json" with { type: "json" };
+import config from "../../../config.json" assert { type: "json" };
 
 export default {
   methods: ["post"],
