@@ -2,6 +2,7 @@ import database from "../../database/blogsCollectionActions.js";
 import Middleware from "../../middleware/middleware.js";
 import utils from "../../utils/responseModel.js";
 import sanitize from "sanitize-html";
+import config from "../../../config.json" with { type: "json" };
 
 export default {
   methods: ["post"],
@@ -15,11 +16,8 @@ export default {
     title = sanitize(title).trim();
     author = sanitize(author).trim();
     content = sanitize(content, {
-      allowedTags: ['b', 'i', 'string', 'a', 'code', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'em', 'img'],
-      allowedAttributes: {
-        'a': ['href'],
-        'img': ['src', 'alt', 'width', 'height']
-      }
+      allowedTags: config.sanitizeHTMLConfig.allowedTagsList,
+      allowedAttributes: config.sanitizeHTMLConfig.allowedAttributes
     }).trim();
 
     if (title === "" || author === "" || content === "")
