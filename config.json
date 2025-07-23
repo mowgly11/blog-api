@@ -22,7 +22,8 @@
     "blockquote",
     "pre",
     "code",
-    "div"
+    "div",
+    "img"
   ],
   "allowedAttributes": {
     "a": ["href", "target", "rel"],
