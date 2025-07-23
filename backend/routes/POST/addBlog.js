@@ -3,6 +3,11 @@ import Middleware from "../../middleware/middleware.js";
 import utils from "../../utils/responseModel.js";
 import sanitize from "sanitize-html";
 import { postsCache } from "../../index.js";
+import fs from "fs";
+import path from "path";
+
+const configPath = path.join(process.cwd(), 'config.json');
+const sanitizationConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
 export default {
   methods: ["post"],
@@ -16,11 +21,10 @@ export default {
     title = sanitize(title).trim();
     author = sanitize(author).trim();
     content = sanitize(content, {
-      allowedTags: ["b", "i", "string", "a", "code", "table", "thead", "tbody", "tr", "th", "td", "em", "img", "h1", "h2", "h3", "h4", "h5", "h6", 'ul', 'li', 'style'],
-      allowedAttributes: {
-        'a': ['href'],
-        'img': ['src', 'alt', 'width', 'height']
-      }
+      allowedTags: sanitizationConfig.allowedTags,
+      allowedAttributes: sanitizationConfig.allowedAttributes,
+      allowedStyles: sanitizationConfig.allowedStyles,
+      allowedClasses: sanitizationConfig.allowedClasses
     }).trim();
 
     if (title === "" || author === "" || content === "")
