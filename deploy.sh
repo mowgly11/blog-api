@@ -13,6 +13,7 @@ echo "Updating dependencies"
 
 npm audit
 npm update
+npm install
 
 echo "creating a new pm2 instance"
 
