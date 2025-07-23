@@ -1,6 +1,7 @@
 import database from "../../database/blogsCollectionActions.js";
 import utils from "../../utils/responseModel.js";
 import Middleware from "../../middleware/middleware.js";
+import { postsCache } from "../../index.js";
 
 export default {
     methods: ["patch"],
@@ -8,11 +9,26 @@ export default {
     middleware: [Middleware.requireJSONContent, Middleware.checkAuthenticated],
     Patch: async function (req, res, next) {
         let id = req.body.id;
-    
-        if(!id || id.trim() === "") return res.status(400).json(utils.getResponseVariables(400, 'Missing required fields (id)'));
+
+        if (!id || id.trim() === "") return res.status(400).json(utils.getResponseVariables(400, 'Missing required fields (id)'));
 
         let blogVisible = await database.changeBlogVisibility(id, true);
-        if(!blogVisible) return res.status(500).json(utils.getResponseVariables(500, 'Internal Server Error'));
+        if (!blogVisible) return res.status(404).json(utils.getResponseVariables(404, 'No blog was found with that ID'));
+
+        let allBlogs;
+
+        if (!postsCache.get("blogs")) {
+            allBlogs = await database.findMultiple();
+            postsCache.set("blogs", allBlogs);
+        } else {
+            allBlogs = postsCache.get('blogs');
+
+            let postIndex = allBlogs.findIndex(doc => doc.id === id);
+
+            if (postIndex !== -1) allBlogs[postIndex].visible = true;
+
+            postsCache.set('blogs', allBlogs);
+        }
 
         res.json(utils.getResponseVariables(200));
     },

@@ -1,7 +1,7 @@
 import database from "../../database/blogsCollectionActions.js";
 import Middleware from "../../middleware/middleware.js";
 import utils from "../../utils/responseModel.js";
-import Utils from '../../utils/responseModel.js';
+import { postsCache } from "../../index.js";
 
 export default {
   methods: ["get"],
@@ -9,11 +9,20 @@ export default {
   middleware: [Middleware.checkAuthenticated],
   Get: async function (req, res, next) {
     let id = req.params.id;
-    if(!id || id.trim() === "") return res.status(400).json(utils.getResponseVariables(400, 'Missing required fields (id)'));
+    if (!id || id.trim() === "") return res.status(400).json(utils.getResponseVariables(400, 'Missing required fields (id)'));
 
-    let foundBlog = await database.find(id);
-    if(!foundBlog) return res.status(404).json(utils.getResponseVariables(404, 'No blog was found with the specified ID'));
+    let foundBlog;
+    let allBlogs;
 
-    res.status(200).json(Utils.getResponseVariables(200, null, foundBlog));
+    if (!postsCache.get("blogs")) {
+      allBlogs = await database.findMultiple();
+      postsCache.set("blogs", allBlogs);
+    } else allBlogs = postsCache.get('blogs');
+    
+    foundBlog = allBlogs.find(doc => doc.id === id);
+
+    if (!foundBlog) return res.status(404).json(utils.getResponseVariables(404, 'No blog was found with the specified ID'));
+
+    res.status(200).json(utils.getResponseVariables(200, null, foundBlog));
   },
 };

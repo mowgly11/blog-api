@@ -18,7 +18,6 @@ class BlogsCollection {
         views: 0,
       });
 
-      await newBlog.save();
       return newBlog;
     } catch (err) {
       logger.error("Error creating blog:", err);
@@ -26,28 +25,21 @@ class BlogsCollection {
     }
   }
 
-  static async find(id, publicOnly = false) {
+  static async find(id) {
     try {
       let blog = await Blog.findOne({ id });
-      
-      if (publicOnly && blog.visible) return blog;
-      else if (!publicOnly) return blog;
 
-      return false;
+      return blog;
     } catch (err) {
       logger.error("Error finding blog:", err);
-      return false;
+      return null;
     }
   }
 
-  static async findMultiple(from, to, publicOnly = false) {
+  static async findMultiple() {
     try {
       let allBlogs = await Blog.find({});
       if (!allBlogs) return false;
-
-      if (publicOnly) allBlogs = allBlogs.filter(v => v.visible);
-
-      allBlogs = allBlogs.slice(from, to);
 
       return allBlogs;
     } catch (err) {

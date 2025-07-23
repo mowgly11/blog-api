@@ -1,20 +1,20 @@
 import database from "../../database/blogsCollectionActions.js";
 import utils from "../../utils/responseModel.js";
+import { postsCache } from "../../index.js";
 
 export default {
   methods: ["get"],
-  endpoint: "/api/get_public_blogs?",
+  endpoint: "/api/get_public_blogs",
   Get: async function (req, res, next) {
-    let from = req.query.from;
-    let to = req.query.to;
-    if (!from || !to) return res.status(400).json(utils.getResponseVariables(400, 'missing query params (from, to)', null));
-    if (isNaN(from) || isNaN(to)) return res.status(400).json(utils.getResponseVariables(400, 'from and to need to be integers', null));
-    from = parseInt(from);
-    to = parseInt(to);
-    if (from > to || from < 0 || to < 0) return res.status(400).json(utils.getResponseVariables(400, 'from and to need to be positive integers and to value needs to be greater than from', null))
-    if (to - from > process.env.MAX_BLOGS) return res.status(400).json(utils.getResponseVariables(400, 'you can only grab a maximum of ' + process.env.MAX_BLOGS + 'blogs at a time'));
-    
-    const allBlogs = await database.findMultiple(from, to, true);
+    let allBlogs;
+
+    if (!postsCache.get("blogs")) {
+      allBlogs = await database.findMultiple();
+      postsCache.set("blogs", allBlogs);
+    } else allBlogs = postsCache.get('blogs');
+
+    allBlogs = allBlogs.filter(v => v.visible); // only get visible posts
+
     res.json(utils.getResponseVariables(200, null, { blogs: allBlogs, length: allBlogs.length }));
   },
 };

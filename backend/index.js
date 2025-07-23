@@ -13,6 +13,10 @@ import logger from './utils/logger.js';
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import hpp from "hpp";
+import NodeCache from "node-cache";
+
+let postsCache = new NodeCache({ stdTTL: 7200, checkperiod: 3600 });
+export { postsCache };
 
 global.__dirname = () => dirname(fileURLToPath(import.meta.url));
 
@@ -31,7 +35,7 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(helmet());
-app.use(morgan("combined"));
+app.use(morgan("dev"));
 app.use(limit({
   windowMs: 60 * 1000,
   limit: 40,
@@ -67,7 +71,7 @@ const readEndpointsDirectory = (directoryPath, app, methodMap) => {
 
       methods.forEach((method) => {
         const { callback, method: httpMethod } = methodMap.get(method);
-        
+
         if (middleware) {
           app[httpMethod](endpoint, ...middleware, module.default[callback]);
         } else {
@@ -85,3 +89,5 @@ readEndpointsDirectory(endpointsPath, app, methodMap);
 const port = process.env.PORT;
 
 app.listen(port, () => logger.info(`Server running on port ${port}`));
+
+export {app};

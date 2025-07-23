@@ -2,6 +2,7 @@ import database from "../../database/blogsCollectionActions.js";
 import Middleware from "../../middleware/middleware.js";
 import utils from "../../utils/responseModel.js";
 import sanitize from "sanitize-html";
+import { postsCache } from "../../index.js";
 
 export default {
   methods: ["post"],
@@ -15,7 +16,7 @@ export default {
     title = sanitize(title).trim();
     author = sanitize(author).trim();
     content = sanitize(content, {
-      allowedTags: ["b", "i", "string", "a", "code", "table", "thead", "tbody", "tr", "th", "td", "em", "img", "h1", "h2", "h3", "h4", "h5", "h6"],
+      allowedTags: ["b", "i", "string", "a", "code", "table", "thead", "tbody", "tr", "th", "td", "em", "img", "h1", "h2", "h3", "h4", "h5", "h6", 'ul', 'li', 'style'],
       allowedAttributes: {
         'a': ['href'],
         'img': ['src', 'alt', 'width', 'height']
@@ -33,6 +34,19 @@ export default {
 
     if (!createBlog)
       return res.json(utils.status(500).getResponseVariables(500, "Internal Server Error"));
+
+    let allBlogs;
+
+    if (!postsCache.get("blogs")) {
+      allBlogs = await database.findMultiple();
+      postsCache.set("blogs", allBlogs);
+    } else allBlogs = postsCache.get('blogs');
+
+    allBlogs.push(createBlog);
+
+    await createBlog.save();
+
+    postsCache.set('blogs', allBlogs);
 
     res.json(utils.getResponseVariables(200, null, createBlog.id));
   },
