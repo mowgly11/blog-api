@@ -1,5 +1,4 @@
 import database from "../../database/blogsCollectionActions.js";
-import Middleware from "../../middleware/middleware.js";
 import utils from "../../utils/responseModel.js";
 import Utils from '../../utils/responseModel.js';
 
