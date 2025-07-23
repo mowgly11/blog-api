@@ -12,6 +12,7 @@ import limit from 'express-rate-limit';
 import logger from './utils/logger.js';
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import hpp from "hpp";
 
 global.__dirname = () => dirname(fileURLToPath(import.meta.url));
 
@@ -38,6 +39,7 @@ app.use(limit({
 }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(hpp())
 
 export default logger;
 
