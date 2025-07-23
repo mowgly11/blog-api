@@ -9,7 +9,7 @@ echo "deleting previous pm2 instance.."
 pm2 stop index
 pm2 delete index
 
-echo "Updading dependencies"
+echo "Updating dependencies"
 
 npm audit
 npm update
